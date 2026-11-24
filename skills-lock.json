@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "skills": {
+    "avalonia": {
+      "source": "linuxdevel/avalonia-skills",
+      "sourceType": "github",
+      "skillPath": "skills/avalonia/SKILL.md",
+      "computedHash": "f145b17eca323d97e8f6115fe83a6937be2809283df70ab47f0965d9daed8999"
+    },
+    "avalonia-design-systems": {
+      "source": "wieslawsoltes/development-plugin-for-avalonia",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "skills/avalonia-design-systems/SKILL.md",
+      "computedHash": "3bd3e582b23bfed858b2c774db72255ca633b6932d985baf717574534b42a7cd"
+    },
+    "avalonia-fluent-design": {
+      "source": "wieslawsoltes/development-plugin-for-avalonia",
+      "ref": "main",
+      "sourceType": "github",
+      "skillPath": "skills/avalonia-fluent-design/SKILL.md",
+      "computedHash": "cc03aed054b55ef43b937937bde1cd3f1640ea8a1dde5f76373baa1394a38437"
+    }
+  }
+}

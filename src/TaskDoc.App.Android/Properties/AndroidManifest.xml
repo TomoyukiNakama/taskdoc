@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto">
+	<uses-permission android:name="android.permission.INTERNET" />
+	<!-- usesCleartextTraffic allows plain http to the development API. Remove it once the API is served over https. -->
+	<application android:label="TaskDoc" android:icon="@drawable/Icon" android:usesCleartextTraffic="true" />
+</manifest>

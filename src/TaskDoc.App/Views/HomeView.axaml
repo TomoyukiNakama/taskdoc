@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:app="using:TaskDoc.App"
+             xmlns:vm="using:TaskDoc.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="650"
+             x:Class="TaskDoc.App.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <Grid ColumnDefinitions="Auto,*">
+        <!-- Sidebar: labels when expanded, icons only when collapsed (useful on narrow screens). -->
+        <shadui:Sidebar x:Name="Sidebar"
+                        Grid.Column="0"
+                        Width="230" MinWidth="60"
+                        Padding="8"
+                        Expanded="{Binding IsSidebarExpanded}"
+                        CurrentRoute="{Binding CurrentRoute}"
+                        Background="{DynamicResource SidebarBackgroundColor}"
+                        BorderBrush="{DynamicResource BorderColor30}"
+                        BorderThickness="0,0,1,0">
+            <shadui:Sidebar.Header>
+                <DockPanel Margin="0,0,0,8">
+                    <Button x:Name="SidebarToggle" DockPanel.Dock="Left" Classes="Ghost Icon"
+                            Command="{Binding ToggleSidebarCommand}" ToolTip.Tip="サイドバーの開閉">
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.PanelLeft}" />
+                    </Button>
+                    <TextBlock Classes="h4" Text="TaskDoc" VerticalAlignment="Center" Margin="8,0,0,0"
+                               IsVisible="{Binding IsSidebarExpanded}" />
+                </DockPanel>
+            </shadui:Sidebar.Header>
+
+            <StackPanel Spacing="4">
+                <shadui:SidebarItemLabel AsSeparator="True" Text="メニュー" />
+                <shadui:SidebarItem x:Name="DashboardNav" Route="dashboard" Content="ホーム"
+                                    Command="{Binding ShowDashboardCommand}" ToolTip.Tip="ホーム">
+                    <shadui:SidebarItem.Icon>
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.House}" />
+                    </shadui:SidebarItem.Icon>
+                </shadui:SidebarItem>
+
+                <shadui:SidebarItemLabel AsSeparator="True" Text="管理" IsVisible="{Binding IsAdmin}" />
+                <shadui:SidebarItem x:Name="UsersNav" Route="users" Content="ユーザー管理"
+                                    Command="{Binding ShowUsersCommand}" IsVisible="{Binding IsAdmin}"
+                                    ToolTip.Tip="ユーザー管理">
+                    <shadui:SidebarItem.Icon>
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.Users}" />
+                    </shadui:SidebarItem.Icon>
+                </shadui:SidebarItem>
+
+                <shadui:SidebarItemLabel AsSeparator="True" Text="アカウント" IsVisible="{Binding CanChangePassword}" />
+                <shadui:SidebarItem x:Name="ChangePasswordNav" Route="password" Content="パスワード変更"
+                                    Command="{Binding ShowChangePasswordCommand}" IsVisible="{Binding CanChangePassword}"
+                                    ToolTip.Tip="パスワード変更">
+                    <shadui:SidebarItem.Icon>
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.KeyRound}" />
+                    </shadui:SidebarItem.Icon>
+                </shadui:SidebarItem>
+            </StackPanel>
+
+            <shadui:Sidebar.Footer>
+                <StackPanel Spacing="8">
+                    <Separator />
+                    <DockPanel>
+                        <Border DockPanel.Dock="Left" Width="32" Height="32" CornerRadius="16"
+                                Background="{DynamicResource PrimaryColor}">
+                            <TextBlock Text="{Binding Initial}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource PrimaryForegroundColor}" FontWeight="SemiBold" />
+                        </Border>
+                        <StackPanel Margin="8,0,0,0" VerticalAlignment="Center" IsVisible="{Binding IsSidebarExpanded}">
+                            <StackPanel Orientation="Horizontal" Spacing="6">
+                                <TextBlock x:Name="UserText" Text="{Binding DisplayName}" FontWeight="Medium"
+                                           TextTrimming="CharacterEllipsis" MaxWidth="110" />
+                                <shadui:Badge Variant="Secondary" IsVisible="{Binding IsAdmin}">管理者</shadui:Badge>
+                            </StackPanel>
+                            <TextBlock Classes="Muted Small" Text="{Binding UserName}" />
+                        </StackPanel>
+                    </DockPanel>
+                    <Button x:Name="SignOutButton" Classes="Ghost" HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left" Command="{Binding SignOutCommand}" ToolTip.Tip="ログアウト">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.LogOut}" />
+                            <TextBlock Text="ログアウト" IsVisible="{Binding IsSidebarExpanded}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </shadui:Sidebar.Footer>
+        </shadui:Sidebar>
+
+        <ContentControl Grid.Column="1" Content="{Binding CurrentSection}" />
+    </Grid>
+</UserControl>

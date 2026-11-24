@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TaskDoc.Api/TaskDoc.Api.csproj" />
+    <Project Path="src/TaskDoc.App.Android/TaskDoc.App.Android.csproj" />
+    <Project Path="src/TaskDoc.App.Browser/TaskDoc.App.Browser.csproj" />
+    <Project Path="src/TaskDoc.App.Desktop/TaskDoc.App.Desktop.csproj" />
+    <Project Path="src/TaskDoc.App.iOS/TaskDoc.App.iOS.csproj" />
+    <Project Path="src/TaskDoc.App/TaskDoc.App.csproj" />
+    <Project Path="src/TaskDoc.Contracts/TaskDoc.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TaskDoc.Api.Tests/TaskDoc.Api.Tests.csproj" />
+    <Project Path="tests/TaskDoc.App.Tests/TaskDoc.App.Tests.csproj" />
+  </Folder>
+</Solution>

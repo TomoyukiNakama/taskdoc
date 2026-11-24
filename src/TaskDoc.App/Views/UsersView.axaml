@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:app="using:TaskDoc.App"
+             xmlns:vm="using:TaskDoc.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             x:Class="TaskDoc.App.Views.UsersView"
+             x:DataType="vm:UsersViewModel">
+
+    <UserControl.Styles>
+        <!-- ShadUI list items align content left; stretch rows so the table columns line up with the header. -->
+        <Style Selector="ListBox#UserList > ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <!-- The selected-row check mark takes width and shifts that row's columns; the row highlight is enough.
+             Needs :selected too: ShadUI shows it with a ":selected" style, and state-triggered styles outrank plain ones. -->
+        <Style Selector="ListBox#UserList > ListBoxItem:selected /template/ PathIcon#CheckSelected">
+            <Setter Property="IsVisible" Value="False" />
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel Margin="32,24">
+        <!-- Title and actions -->
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,16">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                <Button Classes="Outline" Command="{Binding LoadCommand}" ToolTip.Tip="一覧を更新">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.RefreshCw}" />
+                        <TextBlock Text="更新" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="EditButton" Classes="Outline" Command="{Binding EditCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.Pencil}" />
+                        <TextBlock Text="編集" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="NewUserButton" Classes="Primary" Command="{Binding NewUserCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Classes="icon" Text="{x:Static app:LucideIcons.UserPlus}" />
+                        <TextBlock Text="ユーザーを登録" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel Spacing="4">
+                <TextBlock Classes="h2" Text="ユーザー管理" />
+                <TextBlock Classes="Muted" Text="ログインできるユーザーを管理します。" TextWrapping="Wrap"
+                           ToolTip.Tip="行をダブルクリックしても編集できます。" />
+            </StackPanel>
+        </DockPanel>
+
+        <Border DockPanel.Dock="Top" Classes="alert" Margin="0,0,0,12" IsVisible="{Binding HasError}">
+            <DockPanel>
+                <TextBlock Classes="icon" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0,1,8,0"
+                           Text="{x:Static app:LucideIcons.CircleAlert}" />
+                <TextBlock x:Name="ErrorText" Text="{Binding ErrorMessage}" />
+            </DockPanel>
+        </Border>
+
+        <!-- Table -->
+        <shadui:Card Padding="0">
+            <!-- On narrow screens the table scrolls sideways instead of squeezing the columns together. -->
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <DockPanel MinWidth="700">
+                <!-- Keep ColumnDefinitions identical to the row template below. -->
+                <Grid DockPanel.Dock="Top" Classes="tableHeader" ColumnDefinitions="160,*,80,80,64,140" Margin="16,12">
+                    <TextBlock Grid.Column="0" Text="ユーザー名" />
+                    <TextBlock Grid.Column="1" Text="表示名" />
+                    <TextBlock Grid.Column="2" Text="種類" />
+                    <TextBlock Grid.Column="3" Text="権限" />
+                    <TextBlock Grid.Column="4" Text="状態" />
+                    <TextBlock Grid.Column="5" Text="最終ログイン" />
+                </Grid>
+                <Separator DockPanel.Dock="Top" Margin="0" />
+
+                <ListBox x:Name="UserList"
+                         ItemsSource="{Binding Users}"
+                         SelectedItem="{Binding SelectedUser}"
+                         Background="Transparent"
+                         Padding="4"
+                         DoubleTapped="OnUserDoubleTapped">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:UserRow">
+                            <Grid ColumnDefinitions="160,*,80,80,64,140" Opacity="{Binding RowOpacity}">
+                                <TextBlock Grid.Column="0" Text="{Binding UserName}" FontWeight="Medium"
+                                           TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Text="{Binding DisplayName}"
+                                           TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                <shadui:Badge Grid.Column="2" Variant="Outline" HorizontalAlignment="Left"
+                                              Content="{Binding AuthTypeLabel}" />
+                                <shadui:Badge Grid.Column="3" Variant="Secondary" HorizontalAlignment="Left"
+                                              IsVisible="{Binding IsAdmin}" Content="管理者" />
+                                <TextBlock Grid.Column="4" Text="{Binding StatusLabel}" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="5" Classes="Muted" Text="{Binding LastLoginLabel}"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+            </ScrollViewer>
+        </shadui:Card>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,56 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:TaskDoc.App"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             x:Class="TaskDoc.App.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" follows the OS light/dark setting. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <!--
+            Colors come from ShadUI (https://github.com/accntech/shad-ui), e.g. ForegroundColor, MutedColor,
+            BorderColor, PrimaryColor, CardBackgroundColor, WindowBackgroundColor, ErrorColor / ErrorColor10.
+            Use them with DynamicResource so light/dark switching applies. AppResourceKeysTests checks that
+            every DynamicResource key used in the views exists in both themes.
+        -->
+        <FontFamily x:Key="LucideIconFont">avares://TaskDoc.App/Assets/Fonts#lucide</FontFamily>
+    </Application.Resources>
+
+    <Application.Styles>
+        <shadui:ShadTheme />
+
+        <!-- Lucide icon glyph. Set Text to a LucideIcons constant. -->
+        <Style Selector="TextBlock.icon">
+            <Setter Property="FontFamily" Value="{StaticResource LucideIconFont}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Width" Value="16" />
+            <Setter Property="Height" Value="16" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!-- Destructive alert (shadcn "Alert variant=destructive"): an icon and a message. -->
+        <Style Selector="Border.alert">
+            <Setter Property="Background" Value="{DynamicResource ErrorColor10}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ErrorColor60}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="{DynamicResource LgCornerRadius}" />
+            <Setter Property="Padding" Value="12,10" />
+        </Style>
+        <Style Selector="Border.alert TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ErrorColor}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <!-- Table: header row and body rows of a list. -->
+        <Style Selector="Grid.tableHeader TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource MutedColor}" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </Application.Styles>
+</Application>

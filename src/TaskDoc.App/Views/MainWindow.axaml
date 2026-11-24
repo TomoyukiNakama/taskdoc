@@ -1,0 +1,16 @@
+<shadui:Window xmlns="https://github.com/avaloniaui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+               xmlns:views="using:TaskDoc.App.Views"
+               mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
+               x:Class="TaskDoc.App.Views.MainWindow"
+               Icon="/Assets/avalonia-logo.ico"
+               Title="TaskDoc"
+               Width="1100" Height="720"
+               MinWidth="400" MinHeight="500">
+    <!-- Desktop only: ShadUI's window (custom title bar). MainView holds the content, dialogs and toasts,
+         so the Browser and mobile heads, which have no Window, behave the same. -->
+    <views:MainView />
+</shadui:Window>

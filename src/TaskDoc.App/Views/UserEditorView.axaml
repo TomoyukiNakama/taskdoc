@@ -1,0 +1,89 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:app="using:TaskDoc.App"
+             xmlns:vm="using:TaskDoc.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
+             x:Class="TaskDoc.App.Views.UserEditorView"
+             x:DataType="vm:UserEditorViewModel">
+
+    <!-- Shown in a ShadUI dialog (DialogManager.Register<UserEditorView, UserEditorViewModel>). -->
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Escape" Command="{Binding CancelCommand}" />
+    </UserControl.KeyBindings>
+
+    <StackPanel Spacing="16" Margin="24">
+        <StackPanel Spacing="4">
+            <TextBlock Classes="h3" Text="{Binding Title}" />
+            <TextBlock Classes="Muted" TextWrapping="Wrap" IsVisible="{Binding IsNew}"
+                       Text="種類は登録後に変更できません。" />
+        </StackPanel>
+
+        <!-- Auth type: chosen at registration, fixed afterwards. -->
+        <StackPanel Spacing="8">
+            <TextBlock Classes="Small" Text="種類" />
+            <StackPanel Orientation="Horizontal" Spacing="20" IsEnabled="{Binding IsNew}">
+                <RadioButton x:Name="LocalRadio" GroupName="AuthType" Content="システムユーザー" IsChecked="{Binding IsLocal}" />
+                <RadioButton x:Name="AdRadio" GroupName="AuthType" Content="AD ユーザー" IsChecked="{Binding IsAd}" />
+            </StackPanel>
+        </StackPanel>
+
+        <TextBox x:Name="UserNameBox" Text="{Binding UserName}" IsReadOnly="{Binding !IsNew}"
+                 shadui:ControlAssist.Label="ユーザー名"
+                 shadui:ControlAssist.Hint="半角英数字と . _ -（AD ユーザーは AD のアカウント名）" />
+
+        <TextBox x:Name="DisplayNameBox" Text="{Binding DisplayName}"
+                 shadui:ControlAssist.Label="表示名" PlaceholderText="例: 山田 太郎" />
+
+        <TextBox x:Name="EmailBox" Text="{Binding Email}" shadui:ControlAssist.Label="メールアドレス（任意）" />
+
+        <TextBox x:Name="PasswordBox" Classes="PasswordReveal" Text="{Binding Password}" PasswordChar="•"
+                 IsVisible="{Binding ShowInitialPassword}"
+                 shadui:ControlAssist.Label="初期パスワード" shadui:ControlAssist.Hint="8 文字以上" />
+
+        <StackPanel Spacing="8">
+            <CheckBox x:Name="IsAdminCheck" Content="システム管理者" IsChecked="{Binding IsAdmin}"
+                      IsEnabled="{Binding CanChangeAdminAndStatus}" />
+            <CheckBox x:Name="IsActiveCheck" Content="有効（ログインできる）" IsChecked="{Binding IsActive}"
+                      IsEnabled="{Binding CanChangeAdminAndStatus}" IsVisible="{Binding !IsNew}" />
+            <TextBlock Classes="Muted Small" TextWrapping="Wrap" IsVisible="{Binding IsEditingSelf}"
+                       Text="自分自身の管理者権限と有効/無効は、ほかの管理者が変更してください。" />
+        </StackPanel>
+
+        <Border Classes="alert" IsVisible="{Binding HasError}">
+            <DockPanel>
+                <TextBlock Classes="icon" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0,1,8,0"
+                           Text="{x:Static app:LucideIcons.CircleAlert}" />
+                <TextBlock x:Name="ErrorText" Text="{Binding ErrorMessage}" />
+            </DockPanel>
+        </Border>
+
+        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+            <Button Classes="Outline" Content="キャンセル" Command="{Binding CancelCommand}" />
+            <Button x:Name="SaveButton" Classes="Primary" Content="保存" Command="{Binding SaveCommand}"
+                    shadui:ButtonAssist.ShowProgress="{Binding SaveCommand.IsRunning}" />
+        </StackPanel>
+
+        <!-- Password reset for existing system users -->
+        <StackPanel Spacing="12" IsVisible="{Binding ShowPasswordReset}">
+            <Separator />
+            <StackPanel Spacing="4">
+                <TextBlock FontWeight="SemiBold" Text="パスワードの再設定" />
+                <TextBlock Classes="Muted Small" TextWrapping="Wrap"
+                           Text="新しいパスワードを設定すると、このユーザーはすべての端末でログアウトされ、ロックも解除されます。" />
+            </StackPanel>
+            <DockPanel>
+                <Button x:Name="ResetPasswordButton" DockPanel.Dock="Right" Margin="8,0,0,0" Classes="Destructive"
+                        Content="再設定" Command="{Binding ResetPasswordCommand}" VerticalAlignment="Bottom" />
+                <TextBox x:Name="NewPasswordBox" Classes="PasswordReveal" Text="{Binding NewPassword}" PasswordChar="•"
+                         PlaceholderText="新しいパスワード（8 文字以上）" />
+            </DockPanel>
+            <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding HasResetMessage}">
+                <TextBlock Classes="icon" Foreground="{DynamicResource SuccessColor}" Text="{x:Static app:LucideIcons.Check}" />
+                <TextBlock Text="{Binding ResetMessage}" TextWrapping="Wrap" Foreground="{DynamicResource SuccessColor}" />
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

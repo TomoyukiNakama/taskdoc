@@ -1,0 +1,6 @@
+@TaskDoc.Api_HostAddress = http://localhost:5227
+
+GET {{TaskDoc.Api_HostAddress}}/api/health
+Accept: application/json
+
+###

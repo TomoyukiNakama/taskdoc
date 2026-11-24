@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:vm="using:TaskDoc.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="TaskDoc.App.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+
+    <!-- Placeholder until the task and document screens exist. -->
+    <ScrollViewer>
+        <StackPanel Margin="32,24" Spacing="24" MaxWidth="960" HorizontalAlignment="Stretch">
+            <StackPanel Spacing="4">
+                <TextBlock Classes="h2" Text="ホーム" />
+                <TextBlock Classes="Muted" Text="タスクとドキュメントの画面はこれから作成します。" />
+            </StackPanel>
+
+            <shadui:Card HorizontalAlignment="Left" MinWidth="360">
+                <shadui:Card.Header>
+                    <StackPanel Spacing="4">
+                        <shadui:CardTitle>API 接続</shadui:CardTitle>
+                        <shadui:CardDescription>サーバーとデータベースに接続できるか確認します。</shadui:CardDescription>
+                    </StackPanel>
+                </shadui:Card.Header>
+                <StackPanel Spacing="12">
+                    <TextBlock Text="{Binding ConnectionStatus}" TextWrapping="Wrap" />
+                    <Button Classes="Outline" Content="接続を確認" HorizontalAlignment="Left"
+                            Command="{Binding CheckConnectionCommand}"
+                            shadui:ButtonAssist.ShowProgress="{Binding CheckConnectionCommand.IsRunning}" />
+                </StackPanel>
+            </shadui:Card>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

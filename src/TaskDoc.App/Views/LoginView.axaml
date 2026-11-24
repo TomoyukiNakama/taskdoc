@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:app="using:TaskDoc.App"
+             xmlns:vm="using:TaskDoc.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="TaskDoc.App.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
+
+    <!-- Enter submits from either field (Button.IsDefault only works inside a Window, not on Browser/mobile). -->
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Enter" Command="{Binding LoginCommand}" />
+    </UserControl.KeyBindings>
+
+    <ScrollViewer>
+        <shadui:Card Width="380" Margin="16" HasShadow="True"
+                     HorizontalAlignment="Center" VerticalAlignment="Center">
+            <shadui:Card.Header>
+                <StackPanel Spacing="4">
+                    <shadui:CardTitle>TaskDoc にログイン</shadui:CardTitle>
+                    <shadui:CardDescription>
+                        <!-- CardDescription does not wrap plain text; a TextBlock inside does. -->
+                        <TextBlock TextWrapping="Wrap"
+                                   Text="AD アカウント、またはシステムに登録されたユーザーでログインしてください。" />
+                    </shadui:CardDescription>
+                </StackPanel>
+            </shadui:Card.Header>
+
+            <StackPanel Spacing="16">
+                <TextBox x:Name="UserNameBox"
+                         Text="{Binding UserName}"
+                         shadui:ControlAssist.Label="ユーザー名"
+                         PlaceholderText="例: yamada"
+                         AutomationProperties.Name="ユーザー名" />
+
+                <TextBox x:Name="PasswordBox"
+                         Classes="PasswordReveal"
+                         Text="{Binding Password}"
+                         PasswordChar="•"
+                         shadui:ControlAssist.Label="パスワード"
+                         AutomationProperties.Name="パスワード" />
+
+                <Border Classes="alert" IsVisible="{Binding HasError}">
+                    <DockPanel>
+                        <TextBlock Classes="icon" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0,1,8,0"
+                                   Text="{x:Static app:LucideIcons.CircleAlert}" />
+                        <TextBlock x:Name="ErrorText" Text="{Binding ErrorMessage}" />
+                    </DockPanel>
+                </Border>
+
+                <Button x:Name="LoginButton"
+                        Classes="Primary"
+                        Content="ログイン"
+                        Command="{Binding LoginCommand}"
+                        shadui:ButtonAssist.ShowProgress="{Binding LoginCommand.IsRunning}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center" />
+            </StackPanel>
+        </shadui:Card>
+    </ScrollViewer>
+</UserControl>
