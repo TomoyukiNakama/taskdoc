@@ -59,4 +59,11 @@ public sealed class ActiveDirectoryOptions
 public sealed class InitialAdminOptions
 {
     public string UserName { get; set; } = "admin";
+
+    /// <summary>
+    /// Password for the initial admin. When unset, a random one is generated and written to the log once.
+    /// Set it with the Auth__InitialAdmin__Password environment variable, never in a committed file.
+    /// Only used when the Users table is empty.
+    /// </summary>
+    public string? Password { get; set; }
 }

@@ -26,12 +26,19 @@ public sealed class TaskDocApiFactory : WebApplicationFactory<Program>
 
     public FakeAdAuthenticator Ad { get; } = new();
 
+    /// <summary>Extra configuration values. Set them before the first request or service access.</summary>
+    public Dictionary<string, string?> Settings { get; } = new();
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
         builder.UseSetting("ConnectionStrings:Default", $"Data Source={_databasePath}");
         builder.UseSetting("Auth:Jwt:SigningKey", "test-signing-key-test-signing-key-0123456789");
         builder.UseSetting("Logging:LogLevel:Default", "Error");
+        foreach (var (key, value) in Settings)
+        {
+            builder.UseSetting(key, value);
+        }
 
         builder.ConfigureTestServices(services =>
         {
