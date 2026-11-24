@@ -1,6 +1,7 @@
 # TaskDoc
 
 タスクとドキュメントを紐づけて管理するアプリケーション。仕様は [docs/spec.md](docs/spec.md)、API は [docs/api.md](docs/api.md) を参照。
+クローン直後のセットアップ（DB の初期化・初期管理者など）は [docs/setup.md](docs/setup.md) を参照。
 
 ## 構成
 
@@ -60,6 +61,12 @@ scripts/test.sh app -- -class TaskDoc.App.Tests.UsersViewTests   # "--" 以降�
 ## 認証
 
 - **初回起動**: ユーザーが 1 人もいなければ、API がシステムユーザー `admin` を作成し、ランダムなパスワードをログに 1 回だけ出力する（`Created initial admin 'admin' with password '...'`）。ログイン後に変更すること。
+  - パスワードを自分で決めたいときは、DB が空の状態で環境変数 `Auth__InitialAdmin__Password`（8 文字以上）を設定して起動する。この場合パスワードはログに出ない。8 文字未満だと起動に失敗する。ユーザー名は `Auth__InitialAdmin__UserName` で変えられる。
+
+    ```powershell
+    $env:Auth__InitialAdmin__Password = "任意のパスワード"
+    dotnet run --project src/TaskDoc.Api --launch-profile http
+    ```
 - **署名鍵**: 開発環境では未設定でも動く（API を再起動するとアクセストークンは無効になるが、クライアントがリフレッシュトークンで自動的に取り直す）。本番では環境変数 `Auth__Jwt__SigningKey`（32 文字以上）を設定しないと起動しない。
 - **Active Directory**: `appsettings.json` の `Auth:ActiveDirectory` で `Enabled`、`Server`、`Domain` を設定する。Linux で動かす場合は OpenLDAP クライアント（`libldap`）と、LDAPS 用にドメインの CA 証明書が必要。
 - 認証まわりの仕様は [docs/spec.md](docs/spec.md) の 3 章を参照。
