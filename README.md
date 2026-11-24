@@ -20,6 +20,31 @@
 - NuGet のバージョンは `Directory.Packages.props` で一括管理する（csproj には Version を書かない）。
 - `TaskDoc.slnx` は全プロジェクト、`TaskDoc.Dev.slnf` は Android / iOS を除いた開発用のソリューションフィルター。
 
+## 別の PC ですぐに動かす
+
+.NET 10 SDK を入れて、リポジトリを clone したら:
+
+```bash
+scripts/setup-dev-db.sh                                   # データベースとテスト用ユーザーを作る
+dotnet run --project src/TaskDoc.Api --launch-profile http   # API を起動（別ターミナルで次へ）
+dotnet run --project src/TaskDoc.App.Desktop               # デスクトップアプリを起動
+```
+
+`setup-dev-db.sh` が作るユーザー（**開発専用**。パスワードが公開されているので本番では使わない）:
+
+| ユーザー名 | パスワード | 内容 |
+|---|---|---|
+| `admin` | `Admin-pass-1` | システムユーザー・管理者 |
+| `yamada` | `User-pass-1` | システムユーザー |
+| `sato` | （AD） | AD ユーザー。AD 未設定のため、ログインすると「認証サーバーに接続できません」になる |
+| `suzuki` | `User-pass-1` | 無効なユーザー（ログインできないことの確認用） |
+
+- 既存のデータベースがあれば残したまま、足りないユーザーだけ追加する。初期状態に戻すときは `scripts/setup-dev-db.sh --reset`（API を止めてから）。
+- 先に API を起動すると、`admin` がランダムなパスワードで作られる（初回起動時の動き）。その場合スクリプトは `admin` を変更せずにその旨を表示するので、`--reset` で作り直す。
+- Windows など sh がない環境では `dotnet run --project src/TaskDoc.Api --launch-profile http -- seed-dev [--reset]` で同じことができる。
+- 開発環境（`ASPNETCORE_ENVIRONMENT=Development`）以外では実行を拒否する。
+- 自動テスト（`scripts/test.sh`）はデータベースを用意しなくても動く（テストごとに一時ファイルを作る）。
+
 ## 開発
 
 ```bash

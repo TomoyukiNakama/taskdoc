@@ -19,6 +19,12 @@ namespace TaskDoc.Api.Tests;
 /// </summary>
 public sealed class TaskDocApiFactory : WebApplicationFactory<Program>
 {
+    /// <summary>
+    /// Hosting environment. A property rather than a constructor argument because xUnit class fixtures
+    /// must have a single public parameterless constructor. Set it before the first CreateClient().
+    /// </summary>
+    public string EnvironmentName { get; init; } = "Testing";
+
     private readonly string _databasePath =
         Path.Combine(Path.GetTempPath(), $"taskdoc-test-{Guid.NewGuid():N}.db");
 
@@ -31,7 +37,7 @@ public sealed class TaskDocApiFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Testing");
+        builder.UseEnvironment(EnvironmentName);
         builder.UseSetting("ConnectionStrings:Default", $"Data Source={_databasePath}");
         builder.UseSetting("Auth:Jwt:SigningKey", "test-signing-key-test-signing-key-0123456789");
         builder.UseSetting("Logging:LogLevel:Default", "Error");
@@ -79,7 +85,15 @@ public sealed class TaskDocApiFactory : WebApplicationFactory<Program>
     {
         await base.DisposeAsync();
         SqliteConnection.ClearAllPools();
-        File.Delete(_databasePath);
+        try
+        {
+            File.Delete(_databasePath);
+        }
+        catch (IOException)
+        {
+            // Best effort: on Windows the file can still be briefly locked. It lives in the temp folder anyway,
+            // and failing here would turn a passing test into a cleanup error.
+        }
     }
 }
 

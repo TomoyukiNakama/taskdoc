@@ -75,7 +75,8 @@ for suite in "${SUITES[@]}"; do
     echo
     echo "${BOLD}== $project${RESET}"
     log="$(mktemp)"
-    dotnet "$dll" -noColor "${EXTRA_ARGS[@]}" 2>&1 | tee "$log"
+    # ${arr[@]+"${arr[@]}"}: expands an empty array safely under `set -u` on bash 3.2 (macOS default bash).
+    dotnet "$dll" -noColor ${EXTRA_ARGS[@]+"${EXTRA_ARGS[@]}"} 2>&1 | tee "$log"
     exe_status=${PIPESTATUS[0]}
 
     # 例: "TaskDoc.App.Tests  Total: 28, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 1.8s"

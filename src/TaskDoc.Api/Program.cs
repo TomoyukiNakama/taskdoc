@@ -66,6 +66,48 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 
 var app = builder.Build();
 
+// Development helper: `dotnet run --project src/TaskDoc.Api --launch-profile http -- seed-dev [--reset]`
+// creates the database with sample users (known passwords) and exits instead of starting the server.
+if (DevDataSeeder.IsRequested(args))
+{
+    if (!app.Environment.IsDevelopment())
+    {
+        Console.Error.WriteLine($"{DevDataSeeder.Command} は開発環境（ASPNETCORE_ENVIRONMENT=Development）でのみ実行できます。");
+        return 1;
+    }
+
+    if (args.Contains(DevDataSeeder.ResetOption))
+    {
+        try
+        {
+            DevDataSeeder.DeleteDatabase(connectionString);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+            return 1;
+        }
+
+        Console.WriteLine("既存のデータベースを削除しました。");
+    }
+
+    DatabaseMigrator.Migrate(connectionString, app.Logger);
+    var seeded = await DevDataSeeder.SeedAsync(app.Services);
+    if (seeded.Added.Count > 0)
+    {
+        Console.WriteLine($"テスト用ユーザーを追加しました: {string.Join(", ", seeded.Added)}");
+    }
+
+    if (seeded.Skipped.Count > 0)
+    {
+        Console.WriteLine(
+            $"既に存在するため変更していないユーザー: {string.Join(", ", seeded.Skipped)}" + Environment.NewLine +
+            "  これらのパスワードは README の値と異なる場合があります。初期状態に戻すには --reset を付けて実行してください。");
+    }
+
+    return 0;
+}
+
 DatabaseMigrator.Migrate(connectionString, app.Logger);
 await InitialAdminSeeder.SeedAsync(app.Services);
 
@@ -82,7 +124,8 @@ app.MapHealthEndpoints();
 app.MapAuthEndpoints();
 app.MapUserEndpoints();
 
-app.Run();
+await app.RunAsync();
+return 0;
 
 // Exposed for WebApplicationFactory in TaskDoc.Api.Tests.
 public partial class Program;
