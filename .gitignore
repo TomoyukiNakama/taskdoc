@@ -455,7 +455,7 @@ $RECYCLE.BIN/
 
 # --- TaskDoc ---
 # Local SQLite databases and uploaded files created by TaskDoc.Api at runtime
-src/TaskDoc.Api/data/
+src/TaskDoc.Api/App_Data/
 *.db
 *.db-shm
 *.db-wal

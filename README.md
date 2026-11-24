@@ -26,7 +26,7 @@
 dotnet build TaskDoc.Dev.slnf
 dotnet test --solution TaskDoc.Dev.slnf
 
-# API を起動（http://localhost:5227、DB は src/TaskDoc.Api/data/taskdoc.db に作成）
+# API を起動（http://localhost:5227、DB は src/TaskDoc.Api/App_Data/taskdoc.db に作成）
 dotnet run --project src/TaskDoc.Api --launch-profile http
 
 # デスクトップアプリを起動
