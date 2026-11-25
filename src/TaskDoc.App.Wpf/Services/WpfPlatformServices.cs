@@ -27,6 +27,9 @@ public sealed class WpfDialogService : IDialogService
             Content = dialog,
             IsFooterVisible = false,
             DialogMaxWidth = 560,
+            // The default margin (35) caps the dialog's height; a smaller one lets the user editor fit the
+            // default window height (720) without scrolling.
+            DialogMargin = new Thickness(12),
         };
         _open[dialog] = contentDialog;
         _ = ShowAsync(dialog, contentDialog, onClosed);
