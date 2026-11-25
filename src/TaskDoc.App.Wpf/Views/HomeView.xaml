@@ -47,7 +47,9 @@
                                 <TextBlock x:Name="UserText" Text="{Binding DisplayName}" FontWeight="SemiBold"
                                            MaxWidth="110" TextTrimming="CharacterEllipsis"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
+                                <!-- WPF-UI's Secondary badge keeps white text on a light fill; set a theme-aware color. -->
                                 <ui:Badge Margin="6,0,0,0" Appearance="Secondary" Content="管理者"
+                                          Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                           Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibility}}" />
                             </StackPanel>
                             <TextBlock Style="{StaticResource Muted}" FontSize="12" Text="{Binding UserName}" />

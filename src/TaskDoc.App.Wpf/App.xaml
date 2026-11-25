@@ -15,6 +15,15 @@
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
 
+            <!--
+                Workaround for WPF-UI 4.3.0: its Light / Dark themes define BadgeBackground with
+                {StaticResource SystemAccentColorPrimary}, a key that lives in another dictionary (Accent.xaml), so the
+                brush can never be created. A Primary badge (e.g. the users list's 管理者 column) then throws
+                XamlParseException and crashes the app, and other badges lose their background.
+                Keys here take precedence over the merged dictionaries; DynamicResource follows accent / theme changes.
+            -->
+            <SolidColorBrush x:Key="BadgeBackground" Color="{DynamicResource SystemAccentColorPrimary}" />
+
             <!-- View model → view. Every page / dialog view model from TaskDoc.Client needs a line here. -->
             <DataTemplate DataType="{x:Type vm:LoginViewModel}"><views:LoginView /></DataTemplate>
             <DataTemplate DataType="{x:Type vm:HomeViewModel}"><views:HomeView /></DataTemplate>

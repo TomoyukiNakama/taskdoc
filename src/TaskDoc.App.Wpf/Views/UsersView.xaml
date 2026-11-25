@@ -51,7 +51,9 @@
                 <DataGridTemplateColumn Header="種類" Width="90">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:Badge Appearance="Secondary" HorizontalAlignment="Left" Content="{Binding AuthTypeLabel}" />
+                            <!-- WPF-UI's Secondary badge keeps white text on a light fill; set a theme-aware color. -->
+                            <ui:Badge Appearance="Secondary" HorizontalAlignment="Left" Content="{Binding AuthTypeLabel}"
+                                      Foreground="{DynamicResource TextFillColorPrimaryBrush}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
