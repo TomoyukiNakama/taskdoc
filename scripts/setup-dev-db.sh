@@ -4,7 +4,7 @@
 #   scripts/setup-dev-db.sh           データベースがなければ作り、テスト用ユーザーを追加する（既存のデータは残す）
 #   scripts/setup-dev-db.sh --reset   データベースを削除して、初期状態から作り直す
 #
-# 作成先: src/TaskDoc.Api/data/taskdoc.db（git の管理対象外）
+# 作成先: src/TaskDoc.Api/App_Data/taskdoc.db（git の管理対象外）
 # 中身は API 自身が作る（テーブルは DbUp のマイグレーション、パスワードは本番と同じハッシュ方式）。
 # Windows などでは、同じことを次のコマンドで実行できる:
 #   dotnet run --project src/TaskDoc.Api --launch-profile http -- seed-dev [--reset]
@@ -45,7 +45,7 @@ dotnet run --project src/TaskDoc.Api --launch-profile http -- "${ARGS[@]}"
 
 cat <<'EOF'
 
-データベース: src/TaskDoc.Api/data/taskdoc.db
+データベース: src/TaskDoc.Api/App_Data/taskdoc.db
 
 ログインできるユーザー（開発専用）:
   admin  / Admin-pass-1   管理者
