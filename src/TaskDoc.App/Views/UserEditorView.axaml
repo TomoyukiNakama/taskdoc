@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
              xmlns:app="using:TaskDoc.App"
-             xmlns:vm="using:TaskDoc.App.ViewModels"
+             xmlns:vm="using:TaskDoc.Client.ViewModels"
              mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="640"
              x:Class="TaskDoc.App.Views.UserEditorView"
              x:DataType="vm:UserEditorViewModel">

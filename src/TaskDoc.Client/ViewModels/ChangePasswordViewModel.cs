@@ -1,9 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 using TaskDoc.Contracts.Users;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>A system user changes their own password. Other devices are signed out; this one stays signed in.</summary>
 public partial class ChangePasswordViewModel(ITaskDocApi api, AuthSession session, Notifier notifier) : ViewModelBase

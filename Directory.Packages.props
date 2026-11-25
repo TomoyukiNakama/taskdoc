@@ -20,6 +20,8 @@
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <!-- shadcn/ui-style theme and controls for Avalonia 12 (MIT). 0.2.x requires Avalonia >= 12.1.0. -->
     <PackageVersion Include="ShadUI" Version="0.2.4" />
+    <!-- Fluent (Windows 11 style) controls for the WPF app (MIT). -->
+    <PackageVersion Include="WPF-UI" Version="4.3.0" />
     <PackageVersion Include="Refit" Version="17.0.0" />
     <PackageVersion Include="Refit.HttpClientFactory" Version="17.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.15" />

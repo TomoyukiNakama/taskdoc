@@ -4,9 +4,11 @@
     "projects": [
       "src/TaskDoc.Contracts/TaskDoc.Contracts.csproj",
       "src/TaskDoc.Api/TaskDoc.Api.csproj",
+      "src/TaskDoc.Client/TaskDoc.Client.csproj",
       "src/TaskDoc.App/TaskDoc.App.csproj",
       "src/TaskDoc.App.Desktop/TaskDoc.App.Desktop.csproj",
       "src/TaskDoc.App.Browser/TaskDoc.App.Browser.csproj",
+      "src/TaskDoc.App.Wpf/TaskDoc.App.Wpf.csproj",
       "tests/TaskDoc.Api.Tests/TaskDoc.Api.Tests.csproj",
       "tests/TaskDoc.App.Tests/TaskDoc.App.Tests.csproj"
     ]

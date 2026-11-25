@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    UI-framework-independent client: view models, API clients (Refit), sign-in session.
+    Shared by the Avalonia app (TaskDoc.App: Desktop / Browser / Android / iOS) and the WPF app (TaskDoc.App.Wpf).
+    Must not reference Avalonia or WPF; dialogs, notifications and the UI thread go through the interfaces in
+    Services/IPlatformServices.cs, which each app implements.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Refit.HttpClientFactory" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskDoc.Contracts\TaskDoc.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TaskDoc.App.Tests" />
+  </ItemGroup>
+</Project>

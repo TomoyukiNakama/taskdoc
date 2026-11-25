@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Windows desktop app built with WPF + WPF-UI (Fluent). View models and API access come from TaskDoc.Client,
+    shared with the Avalonia app, so both behave the same; only the views differ.
+    Runs on Windows only. EnableWindowsTargeting lets it build (not run) on Linux / macOS too.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>TaskDoc.Wpf</AssemblyName>
+    <!-- Not "TaskDoc.App.Wpf": a namespace segment named "Wpf" would hide the WPF-UI namespace Wpf.Ui. -->
+    <RootNamespace>TaskDoc.WpfApp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WPF-UI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskDoc.Client\TaskDoc.Client.csproj" />
+  </ItemGroup>
+</Project>

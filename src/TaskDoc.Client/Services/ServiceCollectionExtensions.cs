@@ -1,25 +1,22 @@
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using ShadUI;
-using TaskDoc.App.ViewModels;
-using TaskDoc.App.Views;
+using TaskDoc.Client.ViewModels;
 using TaskDoc.Contracts;
 
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// API clients, the sign-in session and every view model. The app must also register
+    /// <see cref="IDialogService"/>, <see cref="INotificationPresenter"/> and <see cref="IUiDispatcher"/>.
+    /// </summary>
     public static IServiceCollection AddTaskDocClient(this IServiceCollection services, ClientOptions options)
     {
         services.AddSingleton(options);
         services.AddSingleton(TimeProvider.System);
         services.AddSingleton<AuthSession>();
         services.AddTransient<AuthHeaderHandler>();
-
-        // ShadUI dialogs and toasts. Their hosts (DialogHost / ToastHost) sit in MainView.
-        // Each custom dialog maps its view model to a view here.
-        services.AddSingleton(_ => new DialogManager().Register<UserEditorView, UserEditorViewModel>());
-        services.AddSingleton<ToastManager>();
         services.AddSingleton<Notifier>();
 
         // Refit 17: client implementations and JSON metadata are source-generated at compile time

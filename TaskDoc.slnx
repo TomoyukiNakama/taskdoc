@@ -6,6 +6,8 @@
     <Project Path="src/TaskDoc.App.Desktop/TaskDoc.App.Desktop.csproj" />
     <Project Path="src/TaskDoc.App.iOS/TaskDoc.App.iOS.csproj" />
     <Project Path="src/TaskDoc.App/TaskDoc.App.csproj" />
+    <Project Path="src/TaskDoc.App.Wpf/TaskDoc.App.Wpf.csproj" />
+    <Project Path="src/TaskDoc.Client/TaskDoc.Client.csproj" />
     <Project Path="src/TaskDoc.Contracts/TaskDoc.Contracts.csproj" />
   </Folder>
   <Folder Name="/tests/">

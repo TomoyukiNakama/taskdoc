@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>Home section. A placeholder until the task and document screens exist.</summary>
 public partial class DashboardViewModel(ITaskDocApi api) : ViewModelBase

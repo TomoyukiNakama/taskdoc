@@ -3,7 +3,7 @@ using Refit;
 using TaskDoc.Contracts.Auth;
 using TaskDoc.Contracts.Users;
 
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 /// <summary>
 /// The signed-in user's tokens. Refreshes the access token shortly before it expires and signs the

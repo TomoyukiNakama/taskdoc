@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>Sign-in for both AD users and users registered in the system (the API tells them apart).</summary>
 public partial class LoginViewModel(AuthSession session) : ViewModelBase

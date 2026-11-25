@@ -3,8 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Headless.XUnit;
 using Avalonia.Threading;
-using TaskDoc.App.Services;
-using TaskDoc.App.ViewModels;
+using TaskDoc.Client.Services;
+using TaskDoc.Client.ViewModels;
 using TaskDoc.Contracts.Users;
 
 namespace TaskDoc.App.Tests;

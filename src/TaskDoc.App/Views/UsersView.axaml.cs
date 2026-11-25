@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using TaskDoc.App.ViewModels;
+using TaskDoc.Client.ViewModels;
 
 namespace TaskDoc.App.Views;
 

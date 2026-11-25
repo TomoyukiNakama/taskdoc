@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 /// <summary>
 /// Adds the access token to API requests. If the API still answers 401, renews the token once and retries.

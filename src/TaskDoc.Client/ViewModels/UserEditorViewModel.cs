@@ -1,9 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 using TaskDoc.Contracts.Users;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>
 /// Register a new user or edit an existing one. Final validation happens in the API; its messages are shown here.

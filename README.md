@@ -9,16 +9,20 @@
 |---|---|
 | `src/TaskDoc.Contracts` | API とクライアントで共有する DTO |
 | `src/TaskDoc.Api` | ASP.NET Core Minimal API（Dapper + SQLite、DbUp でスキーマ管理） |
-| `src/TaskDoc.App` | 共通 UI（Avalonia 12 / [ShadUI](https://github.com/accntech/shad-ui) / CommunityToolkit.Mvvm / Refit） |
+| `src/TaskDoc.Client` | 画面の種類によらない共通部分: ViewModel（CommunityToolkit.Mvvm）、API クライアント（Refit）、ログイン状態の管理 |
+| `src/TaskDoc.App` | Avalonia 版の画面（Avalonia 12 / [ShadUI](https://github.com/accntech/shad-ui)） |
 | `src/TaskDoc.App.Desktop` | Windows / macOS / Linux |
 | `src/TaskDoc.App.Browser` | WebAssembly |
 | `src/TaskDoc.App.Android` | Android（JDK と Android SDK が必要） |
 | `src/TaskDoc.App.iOS` | iOS（macOS + Xcode が必要） |
+| `src/TaskDoc.App.Wpf` | WPF 版（Windows 専用、[WPF-UI](https://github.com/lepoco/wpfui) の Fluent デザイン） |
 | `tests/TaskDoc.Api.Tests` | API の結合テスト（一時 SQLite ファイルを使用） |
 | `tests/TaskDoc.App.Tests` | UI テスト（Avalonia Headless） |
 
 - NuGet のバージョンは `Directory.Packages.props` で一括管理する（csproj には Version を書かない）。
 - `TaskDoc.slnx` は全プロジェクト、`TaskDoc.Dev.slnf` は Android / iOS を除いた開発用のソリューションフィルター。
+- Avalonia 版と WPF 版は同じ ViewModel（`TaskDoc.Client`）を使い、違うのは画面（XAML）だけ。ダイアログ・通知・UI スレッドは `TaskDoc.Client/Services/IPlatformServices.cs` のインターフェースを通し、各アプリが実装する（Avalonia 版は ShadUI、WPF 版は WPF-UI）。
+- ViewModel を追加したら、両方のアプリに画面の対応付けを書く（Avalonia 版は `ViewLocator.cs`、WPF 版は `App.xaml` の `DataTemplate`）。漏れは `ViewMappingTests` が検出する。
 
 ## 別の PC ですぐに動かす
 
@@ -28,6 +32,7 @@
 scripts/setup-dev-db.sh                                   # データベースとテスト用ユーザーを作る
 dotnet run --project src/TaskDoc.Api --launch-profile http   # API を起動（別ターミナルで次へ）
 dotnet run --project src/TaskDoc.App.Desktop               # デスクトップアプリを起動
+dotnet run --project src/TaskDoc.App.Wpf                   # または WPF 版を起動（Windows のみ）
 ```
 
 `setup-dev-db.sh` が作るユーザー（**開発専用**。パスワードが公開されているので本番では使わない）:
@@ -60,15 +65,27 @@ dotnet run --project src/TaskDoc.App.Desktop
 
 # ブラウザ版を起動（http://localhost:5235）
 dotnet run --project src/TaskDoc.App.Browser
+
+# WPF 版を起動（Windows のみ）
+dotnet run --project src/TaskDoc.App.Wpf
 ```
 
-## UI（ShadUI）
+## WPF 版
+
+- Windows 10 / 11 専用。Linux / macOS でもビルドはできる（`EnableWindowsTargeting`）が、起動はできない。
+- テーマは WPF-UI（`App.xaml` の `ui:ThemesDictionary` と `ui:ControlsDictionary`）。Windows のライト / ダーク設定に合わせて切り替わる。
+- ダイアログは `MainWindow` の `ContentDialogHost`、通知は `SnackbarPresenter` に表示する（`Services/WpfPlatformServices.cs`）。
+- 接続先の API は既定で `http://localhost:5227`。変えるときは環境変数 `TASKDOC_API_URL` を設定して起動する。
+- 名前空間は `TaskDoc.WpfApp`。`TaskDoc.App.Wpf` にすると、名前の一部の `Wpf` が WPF-UI の名前空間 `Wpf.Ui` と衝突してビルドできない。
+- 自動テストは Avalonia 版の画面に対して行っている。ViewModel は共通なので動作のロジックは同じだが、WPF 版の画面そのもの（見た目・バインディング）は Windows で実際に操作して確認する。
+
+## Avalonia 版の UI（ShadUI）
 
 - テーマは `App.axaml` の `<shadui:ShadTheme />`。FluentTheme は使っていない。
 - 色は ShadUI のキーを `DynamicResource` で使う（`ForegroundColor` `MutedColor` `BorderColor` `PrimaryColor` `CardBackgroundColor` `ErrorColor` など）。存在しないキーは何も表示されないまま失敗するため、`AppResourceKeysTests` が XAML 中の全キーをライト/ダーク両方で確認している。
 - ボタンは `Classes="Primary"` / `Outline` / `Ghost` / `Destructive`、入力欄のラベルは `shadui:ControlAssist.Label`、カードは `shadui:Card`。
 - アイコンは Lucide フォント（`Assets/Fonts/lucide.ttf`、ISC ライセンス、`LucideIcons.cs` にコードポイント）。`<TextBlock Classes="icon" Text="{x:Static app:LucideIcons.House}" />`。
-- ダイアログとトーストは `MainView` の `DialogHost` / `ToastHost` に表示される（デスクトップ・ブラウザ・モバイル共通）。独自ビューのダイアログは `ServiceCollectionExtensions` で `DialogManager.Register<View, ViewModel>()` する。
+- ダイアログとトーストは `MainView` の `DialogHost` / `ToastHost` に表示される（デスクトップ・ブラウザ・モバイル共通）。独自ビューのダイアログは `Services/AppServiceCollectionExtensions.cs` で `DialogManager.Register<View, ViewModel>()` する。
 - ShadUI のフォントは Inter が前提。各プラットフォームの起動処理で `.WithInterFont()` を外さないこと（外すと起動時に例外）。
 
 ## テストの実行

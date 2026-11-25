@@ -2,7 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
-using TaskDoc.App.ViewModels;
+using TaskDoc.Client.ViewModels;
 using TaskDoc.Contracts.Users;
 
 namespace TaskDoc.App.Tests;
@@ -85,7 +85,7 @@ public sealed class UsersViewTests : IDisposable
         // No extra waiting: when the save command completes, the list must already be reloaded.
         Assert.Equal(4, users.Users.Count);
         Assert.False(users.IsEditorOpen);
-        Assert.Equal("田中 三郎 さんを登録しました。", _client.Get<Services.Notifier>().LastMessage);
+        Assert.Equal("田中 三郎 さんを登録しました。", _client.Get<Client.Services.Notifier>().LastMessage);
         Assert.Equal(4, users.SelectedUser?.Id);
     }
 
@@ -153,7 +153,7 @@ public sealed class UsersViewTests : IDisposable
 
         var body = JsonDocument.Parse(_client.Api.Bodies.Single(b => b.Route == "PUT /api/users/3").Body).RootElement;
         Assert.True(body.GetProperty("isActive").GetBoolean());
-        Assert.Equal("鈴木 次郎 さんの情報を更新しました。", _client.Get<Services.Notifier>().LastMessage);
+        Assert.Equal("鈴木 次郎 さんの情報を更新しました。", _client.Get<Client.Services.Notifier>().LastMessage);
         Assert.Equal("有効", users.Users.Single(u => u.Id == 3).StatusLabel);
         Assert.Equal(3, users.SelectedUser?.Id);
     }

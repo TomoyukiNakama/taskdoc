@@ -1,7 +1,7 @@
 using System.Net;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
-using TaskDoc.App.ViewModels;
+using TaskDoc.Client.ViewModels;
 using TaskDoc.Contracts.Users;
 
 namespace TaskDoc.App.Tests;
@@ -44,11 +44,11 @@ public sealed class ChangePasswordTests : IDisposable
 
         await Ui.ClickAsync(window, "ChangeButton");
 
-        Assert.Equal("パスワードを変更しました。ほかの端末ではログアウトされます。", _client.Get<Services.Notifier>().LastMessage);
+        Assert.Equal("パスワードを変更しました。ほかの端末ではログアウトされます。", _client.Get<Client.Services.Notifier>().LastMessage);
         Assert.Equal("", Ui.Find<TextBox>(window, "NewPasswordBox").Text);
 
         // Later requests use the token from the password-change response (the old session was revoked server-side).
-        await _client.Get<Services.ITaskDocApi>().GetMeAsync(TestContext.Current.CancellationToken);
+        await _client.Get<Client.Services.ITaskDocApi>().GetMeAsync(TestContext.Current.CancellationToken);
         Assert.Equal("Bearer access-2", _client.Api.Requests.Last(r => r.Route == "GET /api/auth/me").Authorization);
     }
 

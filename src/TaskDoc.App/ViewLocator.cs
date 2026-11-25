@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using TaskDoc.App.ViewModels;
+using TaskDoc.Client.ViewModels;
 using TaskDoc.App.Views;
 
 namespace TaskDoc.App;

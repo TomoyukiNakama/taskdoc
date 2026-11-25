@@ -3,15 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
-             xmlns:vm="using:TaskDoc.App.ViewModels"
+             xmlns:services="using:TaskDoc.App.Services"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="700"
              x:Class="TaskDoc.App.Views.MainView"
-             x:DataType="vm:MainViewModel"
+             x:DataType="services:MainViewContext"
              Background="{DynamicResource WindowBackgroundColor}">
 
     <!-- Current page (ViewLocator picks the view), with dialogs and toasts on top. -->
     <Panel>
-        <ContentControl Content="{Binding CurrentPage}" />
+        <ContentControl Content="{Binding Shell.CurrentPage}" />
         <shadui:DialogHost x:Name="DialogHost" Manager="{Binding DialogManager}" />
         <shadui:ToastHost Manager="{Binding ToastManager}" />
     </Panel>

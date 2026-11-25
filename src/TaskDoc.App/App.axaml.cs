@@ -3,7 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using TaskDoc.App.Services;
-using TaskDoc.App.ViewModels;
+using TaskDoc.Client.Services;
 using TaskDoc.App.Views;
 
 namespace TaskDoc.App;
@@ -38,7 +38,7 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         Services = new ServiceCollection()
-            .AddTaskDocClient(Options)
+            .AddTaskDocAvaloniaApp(Options)
             .BuildServiceProvider();
 
         // Check IActivityApplicationLifetime (Android) before ISingleViewApplicationLifetime (iOS / Browser).
@@ -46,21 +46,21 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = Services.GetRequiredService<MainViewModel>()
+                DataContext = Services.GetRequiredService<MainViewContext>()
             };
         }
         else if (ApplicationLifetime is IActivityApplicationLifetime activity)
         {
             activity.MainViewFactory = () => new MainView
             {
-                DataContext = Services.GetRequiredService<MainViewModel>()
+                DataContext = Services.GetRequiredService<MainViewContext>()
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleView)
         {
             singleView.MainView = new MainView
             {
-                DataContext = Services.GetRequiredService<MainViewModel>()
+                DataContext = Services.GetRequiredService<MainViewContext>()
             };
         }
 

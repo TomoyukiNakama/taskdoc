@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Time.Testing;
 using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 using TaskDoc.Contracts.Auth;
 using TaskDoc.Contracts.Users;
 
@@ -20,7 +21,7 @@ public sealed class TestClient : IDisposable
 
     public TestClient()
     {
-        var services = new ServiceCollection().AddTaskDocClient(new ClientOptions { HttpMessageHandlerFactory = () => Api });
+        var services = new ServiceCollection().AddTaskDocAvaloniaApp(new ClientOptions { HttpMessageHandlerFactory = () => Api });
         services.AddSingleton<TimeProvider>(Clock);
         _services = services.BuildServiceProvider();
     }

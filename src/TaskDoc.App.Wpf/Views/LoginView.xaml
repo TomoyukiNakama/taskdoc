@@ -1,0 +1,42 @@
+<UserControl x:Class="TaskDoc.WpfApp.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml">
+    <!-- Enter submits from either field. -->
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+    </UserControl.InputBindings>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ui:Card Width="400" Margin="16" Padding="28" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Style="{StaticResource SectionTitle}" Text="TaskDoc にログイン" />
+                <TextBlock Style="{StaticResource Muted}" Margin="0,6,0,20"
+                           Text="AD アカウント、またはシステムに登録されたユーザーでログインしてください。" />
+
+                <TextBlock Style="{StaticResource FieldLabel}" Text="ユーザー名" />
+                <ui:TextBox x:Name="UserNameBox"
+                            Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"
+                            PlaceholderText="例: yamada"
+                            AutomationProperties.Name="ユーザー名" />
+
+                <TextBlock Style="{StaticResource FieldLabel}" Margin="0,16,0,6" Text="パスワード" />
+                <ui:PasswordBox x:Name="PasswordBox"
+                                Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                AutomationProperties.Name="パスワード" />
+
+                <ui:InfoBar x:Name="ErrorBar" Margin="0,16,0,0" Severity="Error" IsClosable="False"
+                            IsOpen="{Binding HasError, Mode=OneWay}" Message="{Binding ErrorMessage}" />
+
+                <ui:Button x:Name="LoginButton" Margin="0,20,0,0" Appearance="Primary"
+                           HorizontalAlignment="Stretch" Command="{Binding LoginCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <ui:ProgressRing Style="{StaticResource BusyRing}"
+                                         Visibility="{Binding LoginCommand.IsRunning, Converter={StaticResource BoolToVisibility}}" />
+                        <TextBlock Text="ログイン" />
+                    </StackPanel>
+                </ui:Button>
+            </StackPanel>
+        </ui:Card>
+    </ScrollViewer>
+</UserControl>

@@ -2,7 +2,7 @@ using System.Net;
 using System.Text.Json;
 using Refit;
 
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 /// <summary>
 /// Turns API failures into messages for the screen. The API writes its problem "detail" and

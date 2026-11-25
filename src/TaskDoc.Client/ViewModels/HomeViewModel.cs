@@ -1,9 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 using TaskDoc.Contracts.Users;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>
 /// Signed-in shell: sidebar navigation and the current section.

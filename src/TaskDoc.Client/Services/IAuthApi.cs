@@ -1,7 +1,7 @@
 using Refit;
 using TaskDoc.Contracts.Auth;
 
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 /// <summary>Sign-in endpoints. This client sends no access token (it is how tokens are obtained).</summary>
 public interface IAuthApi

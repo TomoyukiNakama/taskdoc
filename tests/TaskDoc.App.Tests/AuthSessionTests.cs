@@ -1,5 +1,5 @@
 using System.Net;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 using TaskDoc.Contracts.Health;
 using TaskDoc.Contracts.Users;
 

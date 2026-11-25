@@ -1,4 +1,4 @@
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 /// <summary>Client settings. Each platform head may override them before the app starts.</summary>
 public sealed class ClientOptions

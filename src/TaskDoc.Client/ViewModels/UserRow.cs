@@ -1,6 +1,6 @@
 using TaskDoc.Contracts.Users;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>One line of the user list, with display-ready text.</summary>
 public sealed class UserRow(UserDto user)

@@ -1,14 +1,11 @@
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
-using ShadUI;
-using TaskDoc.App.Services;
+using TaskDoc.Client.Services;
 
-namespace TaskDoc.App.ViewModels;
+namespace TaskDoc.Client.ViewModels;
 
 /// <summary>
 /// App shell: shows the login page until the user signs in, then the home page.
 /// Returns to the login page on sign-out or when the session expires.
-/// Also hosts ShadUI dialogs and toasts for every page.
 /// </summary>
 public partial class MainViewModel : ViewModelBase
 {
@@ -18,25 +15,18 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     public partial ViewModelBase CurrentPage { get; set; }
 
-    public DialogManager DialogManager { get; }
-
-    public ToastManager ToastManager { get; }
-
     public MainViewModel(
         AuthSession session,
-        DialogManager dialogManager,
-        ToastManager toastManager,
+        IUiDispatcher ui,
         Func<LoginViewModel> createLogin,
         Func<HomeViewModel> createHome)
     {
-        DialogManager = dialogManager;
-        ToastManager = toastManager;
         _createLogin = createLogin;
         _createHome = createHome;
         CurrentPage = CreateLogin(message: null);
 
         // Raised from whichever thread performed the failed refresh.
-        session.SessionExpired += (_, _) => Dispatcher.UIThread.Post(() =>
+        session.SessionExpired += (_, _) => ui.Post(() =>
             CurrentPage = CreateLogin("セッションの有効期限が切れました。再度ログインしてください。"));
     }
 

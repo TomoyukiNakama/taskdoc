@@ -3,7 +3,7 @@ using TaskDoc.Contracts.Auth;
 using TaskDoc.Contracts.Health;
 using TaskDoc.Contracts.Users;
 
-namespace TaskDoc.App.Services;
+namespace TaskDoc.Client.Services;
 
 /// <summary>
 /// Refit client for TaskDoc.Api. Requests go through <see cref="AuthHeaderHandler"/>, which adds the

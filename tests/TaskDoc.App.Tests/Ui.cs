@@ -1,7 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using TaskDoc.App.ViewModels;
+using TaskDoc.App.Services;
+using TaskDoc.Client.ViewModels;
 using TaskDoc.App.Views;
 using TaskDoc.Contracts.Users;
 
@@ -13,7 +14,7 @@ public static class Ui
     public static (Window Window, MainViewModel Shell) ShowApp(TestClient client)
     {
         var shell = client.Get<MainViewModel>();
-        var window = new Window { Content = new MainView { DataContext = shell }, Width = 1000, Height = 700 };
+        var window = new Window { Content = new MainView { DataContext = client.Get<MainViewContext>() }, Width = 1000, Height = 700 };
         window.Show();
         Dispatcher.UIThread.RunJobs();
         return (window, shell);
