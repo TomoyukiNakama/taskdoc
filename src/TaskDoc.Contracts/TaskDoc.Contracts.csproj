@@ -2,7 +2,7 @@
 
   <!-- DTOs shared by TaskDoc.Api and TaskDoc.App. Keep this project free of server- or UI-specific dependencies. -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
 </Project>

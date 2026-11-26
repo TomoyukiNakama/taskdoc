@@ -2,7 +2,7 @@
   <!-- Avalonia UI (views, ShadUI theme) used by the Desktop, Browser, Android and iOS heads.
        View models and API access come from TaskDoc.Client, shared with the WPF app. -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

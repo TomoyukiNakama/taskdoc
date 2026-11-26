@@ -8,7 +8,7 @@ namespace TaskDoc.Client.ViewModels;
 public partial class DashboardViewModel(ITaskDocApi api) : ViewModelBase
 {
     [ObservableProperty]
-    public partial string ConnectionStatus { get; set; } = "未確認";
+    private string _connectionStatus = "未確認";
 
     [RelayCommand]
     private async Task CheckConnectionAsync(CancellationToken ct)

@@ -50,8 +50,8 @@ fi
 cd "$ROOT"
 
 if [[ $BUILD -eq 1 ]]; then
-    echo "${BOLD}== ビルド ($CONFIGURATION, TaskDoc.Dev.slnf)${RESET}"
-    if ! dotnet build TaskDoc.Dev.slnf -c "$CONFIGURATION" -nologo -v q; then
+    echo "${BOLD}== ビルド ($CONFIGURATION, TaskDoc.sln)${RESET}"
+    if ! dotnet build TaskDoc.sln -c "$CONFIGURATION" -nologo -v q; then
         echo "${RED}ビルドに失敗しました。${RESET}" >&2
         exit 2
     fi
@@ -66,7 +66,7 @@ for suite in "${SUITES[@]}"; do
         app) project="TaskDoc.App.Tests" ;;
     esac
 
-    dll="tests/$project/bin/$CONFIGURATION/net10.0/$project.dll"
+    dll="tests/$project/bin/$CONFIGURATION/net8.0/$project.dll"
     if [[ ! -f "$dll" ]]; then
         echo "${RED}$dll がありません。--no-build を外してビルドしてください。${RESET}" >&2
         exit 2

@@ -19,9 +19,14 @@ public static class ServiceCollectionExtensions
         services.AddTransient<AuthHeaderHandler>();
         services.AddSingleton<Notifier>();
 
-        // Refit 17: client implementations and JSON metadata are source-generated at compile time
+        // Refit 16: client implementations and JSON metadata are source-generated at compile time
         // (no reflection, so trimming / WASM are safe). New DTOs must be added to TaskDocJsonContext.
-        RefitSettings Settings(IServiceProvider _) => new() { HttpMessageHandlerFactory = options.HttpMessageHandlerFactory };
+        // The serializer is set explicitly: Refit's default options add a camelCase enum converter, which would
+        // send "local" instead of "Local" and override the [JsonConverter] on the enum types.
+        RefitSettings Settings(IServiceProvider _) => new(new SystemTextJsonContentSerializer(TaskDocJsonContext.Default.Options))
+        {
+            HttpMessageHandlerFactory = options.HttpMessageHandlerFactory,
+        };
 
         services.AddRefitGeneratedClient<IAuthApi>(TaskDocJsonContext.Default, Settings)
             .ConfigureHttpClient(client => client.BaseAddress = options.ApiBaseAddress);

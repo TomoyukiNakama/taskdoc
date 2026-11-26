@@ -13,7 +13,7 @@ public partial class MainViewModel : ViewModelBase
     private readonly Func<HomeViewModel> _createHome;
 
     [ObservableProperty]
-    public partial ViewModelBase CurrentPage { get; set; }
+    private ViewModelBase _currentPage;
 
     public MainViewModel(
         AuthSession session,

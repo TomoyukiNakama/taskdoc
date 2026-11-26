@@ -19,7 +19,7 @@ public sealed class AuthHeaderHandler(AuthSession session) : DelegatingHandler
         // Buffer the body so the request can be sent a second time.
         if (request.Content is not null)
         {
-            await request.Content.LoadIntoBufferAsync(ct);
+            await request.Content.LoadIntoBufferAsync(); // .NET 8 has no overload taking a CancellationToken.
         }
 
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

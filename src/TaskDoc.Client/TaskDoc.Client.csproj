@@ -6,7 +6,7 @@
     Services/IPlatformServices.cs, which each app implements.
   -->
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>

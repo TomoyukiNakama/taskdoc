@@ -14,18 +14,18 @@ public partial class UsersViewModel(ITaskDocApi api, AuthSession session, IDialo
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(EditCommand))]
-    public partial UserRow? SelectedUser { get; set; }
+    private UserRow? _selectedUser;
 
     /// <summary>The register/edit dialog's view model while the dialog is open, otherwise null.</summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsEditorOpen))]
-    public partial UserEditorViewModel? Editor { get; set; }
+    private UserEditorViewModel? _editor;
 
     public bool IsEditorOpen => Editor is not null;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    public partial string? ErrorMessage { get; set; }
+    private string? _errorMessage;
 
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 

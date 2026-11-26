@@ -57,7 +57,8 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy(UserEndpoints.AdminPolicy, policy => policy.RequireRole(TokenService.AdminRole));
 
 builder.Services.AddProblemDetails();
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // The WASM client is served from a different origin, so it needs CORS.
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
@@ -113,7 +114,9 @@ await InitialAdminSeeder.SeedAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi().AllowAnonymous();
+    // Served at the same path as before (/openapi/v1.json). This middleware runs before UseAuthorization,
+    // so the document is reachable without signing in.
+    app.UseSwagger(options => options.RouteTemplate = "openapi/{documentName}.json");
 }
 
 app.UseCors();

@@ -8,7 +8,7 @@ namespace TaskDoc.Contracts;
 
 /// <summary>
 /// Source-generated JSON metadata for every DTO sent over the API.
-/// Refit 17 requires it on the client (no reflection, so it also works trimmed on Browser/WASM and mobile).
+/// Refit's generated clients require it on the client (no reflection, so it also works trimmed on Browser/WASM and mobile).
 /// Add a [JsonSerializable] line for each new request/response type.
 /// </summary>
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web)]

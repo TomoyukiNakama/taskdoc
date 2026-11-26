@@ -46,15 +46,15 @@ public partial class HomeViewModel : ViewModelBase
     public bool CanChangePassword => _session.CurrentUser?.AuthType == UserAuthType.Local;
 
     [ObservableProperty]
-    public partial ViewModelBase CurrentSection { get; set; }
+    private ViewModelBase _currentSection;
 
     /// <summary>Route of the current section; the sidebar highlights the matching item.</summary>
     [ObservableProperty]
-    public partial string CurrentRoute { get; set; }
+    private string _currentRoute;
 
     /// <summary>Sidebar shows labels when expanded, icons only when collapsed.</summary>
     [ObservableProperty]
-    public partial bool IsSidebarExpanded { get; set; } = true;
+    private bool _isSidebarExpanded = true;
 
     public event EventHandler? SignedOut;
 

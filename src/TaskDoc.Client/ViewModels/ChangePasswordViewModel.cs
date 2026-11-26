@@ -10,19 +10,19 @@ public partial class ChangePasswordViewModel(ITaskDocApi api, AuthSession sessio
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ChangeCommand))]
-    public partial string CurrentPassword { get; set; } = "";
+    private string _currentPassword = "";
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ChangeCommand))]
-    public partial string NewPassword { get; set; } = "";
+    private string _newPassword = "";
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ChangeCommand))]
-    public partial string ConfirmPassword { get; set; } = "";
+    private string _confirmPassword = "";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    public partial string? ErrorMessage { get; set; }
+    private string? _errorMessage;
 
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 

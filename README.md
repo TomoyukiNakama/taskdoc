@@ -20,13 +20,14 @@
 | `tests/TaskDoc.App.Tests` | UI テスト（Avalonia Headless） |
 
 - NuGet のバージョンは `Directory.Packages.props` で一括管理する（csproj には Version を書かない）。
-- `TaskDoc.slnx` は全プロジェクト、`TaskDoc.Dev.slnf` は Android / iOS を除いた開発用のソリューションフィルター。
+- .NET 8 ベース（`global.json` で SDK 8.0 を指定）。`TaskDoc.sln` は SDK 8 でビルドできるプロジェクト（API・共通ライブラリ・デスクトップ・WPF・テスト）をまとめたもの。
+- ブラウザ版・Android・iOS は Avalonia 12 が net10.0 を必須としているため net10.0 のままで、`TaskDoc.sln` に含めない。各フォルダーの `global.json` で SDK 10 を指定しているので、**そのフォルダーに移動してから** `dotnet build` / `dotnet run` する（.NET 10 SDK が必要）。
 - Avalonia 版と WPF 版は同じ ViewModel（`TaskDoc.Client`）を使い、違うのは画面（XAML）だけ。ダイアログ・通知・UI スレッドは `TaskDoc.Client/Services/IPlatformServices.cs` のインターフェースを通し、各アプリが実装する（Avalonia 版は ShadUI、WPF 版は WPF-UI）。
 - ViewModel を追加したら、両方のアプリに画面の対応付けを書く（Avalonia 版は `ViewLocator.cs`、WPF 版は `App.xaml` の `DataTemplate`）。漏れは `ViewMappingTests` が検出する。
 
 ## 別の PC ですぐに動かす
 
-.NET 10 SDK を入れて、リポジトリを clone したら:
+.NET 8 SDK を入れて、リポジトリを clone したら:
 
 ```bash
 scripts/setup-dev-db.sh                                   # データベースとテスト用ユーザーを作る
@@ -53,9 +54,9 @@ dotnet run --project src/TaskDoc.App.Wpf                   # または WPF 版�
 ## 開発
 
 ```bash
-# ビルドとテスト（Linux では Android / iOS を除く）
-dotnet build TaskDoc.Dev.slnf
-dotnet test --solution TaskDoc.Dev.slnf
+# ビルドとテスト（.NET 8 SDK。ブラウザ版・Android・iOS は含まない）
+dotnet build TaskDoc.sln
+scripts/test.sh
 
 # API を起動（http://localhost:5227、DB は src/TaskDoc.Api/App_Data/taskdoc.db に作成）
 dotnet run --project src/TaskDoc.Api --launch-profile http
@@ -63,8 +64,8 @@ dotnet run --project src/TaskDoc.Api --launch-profile http
 # デスクトップアプリを起動
 dotnet run --project src/TaskDoc.App.Desktop
 
-# ブラウザ版を起動（http://localhost:5235）
-dotnet run --project src/TaskDoc.App.Browser
+# ブラウザ版を起動（http://localhost:5235。.NET 10 SDK が必要なので、フォルダーに移動してから実行する）
+cd src/TaskDoc.App.Browser && dotnet run
 
 # WPF 版を起動（Windows のみ）
 dotnet run --project src/TaskDoc.App.Wpf

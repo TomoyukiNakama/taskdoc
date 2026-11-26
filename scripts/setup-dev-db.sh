@@ -28,7 +28,7 @@ case "${1:-}" in
 esac
 
 if ! command -v dotnet >/dev/null 2>&1; then
-    echo ".NET SDK（dotnet）が見つかりません。.NET 10 SDK をインストールしてください。" >&2
+    echo ".NET SDK（dotnet）が見つかりません。.NET 8 SDK をインストールしてください。" >&2
     exit 2
 fi
 

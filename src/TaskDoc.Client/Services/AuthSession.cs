@@ -43,7 +43,7 @@ public sealed class AuthSession(IAuthApi authApi, TimeProvider clock)
         }
         catch (ApiRequestException)
         {
-            // Refit 17: the request could not be sent (server down, DNS, TLS...).
+            // Refit 16: the request could not be sent (server down, DNS, TLS...).
             return ApiErrors.ConnectionFailed;
         }
     }

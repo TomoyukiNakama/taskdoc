@@ -50,20 +50,20 @@ public partial class UserEditorViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    public partial string UserName { get; set; }
+    private string _userName;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    public partial string DisplayName { get; set; }
+    private string _displayName;
 
     [ObservableProperty]
-    public partial string Email { get; set; }
+    private string _email;
 
     /// <summary>System user (password in TaskDoc) when true, AD user when false. Fixed after registration.</summary>
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsAd), nameof(ShowInitialPassword))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    public partial bool IsLocal { get; set; }
+    private bool _isLocal;
 
     public bool IsAd
     {
@@ -73,7 +73,7 @@ public partial class UserEditorViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    public partial string Password { get; set; } = "";
+    private string _password = "";
 
     public bool ShowInitialPassword => IsNew && IsLocal;
 
@@ -81,24 +81,24 @@ public partial class UserEditorViewModel : ViewModelBase
     public bool ShowPasswordReset => !IsNew && _existing!.AuthType == UserAuthType.Local;
 
     [ObservableProperty]
-    public partial bool IsAdmin { get; set; }
+    private bool _isAdmin;
 
     [ObservableProperty]
-    public partial bool IsActive { get; set; }
+    private bool _isActive;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ResetPasswordCommand))]
-    public partial string NewPassword { get; set; } = "";
+    private string _newPassword = "";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    public partial string? ErrorMessage { get; set; }
+    private string? _errorMessage;
 
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasResetMessage))]
-    public partial string? ResetMessage { get; set; }
+    private string? _resetMessage;
 
     public bool HasResetMessage => !string.IsNullOrEmpty(ResetMessage);
 

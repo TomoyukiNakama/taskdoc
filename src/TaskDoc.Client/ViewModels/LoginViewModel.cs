@@ -9,15 +9,15 @@ public partial class LoginViewModel(AuthSession session) : ViewModelBase
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
-    public partial string UserName { get; set; } = "";
+    private string _userName = "";
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
-    public partial string Password { get; set; } = "";
+    private string _password = "";
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasError))]
-    public partial string? ErrorMessage { get; set; }
+    private string? _errorMessage;
 
     public bool HasError => !string.IsNullOrEmpty(ErrorMessage);
 

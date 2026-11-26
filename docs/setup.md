@@ -7,7 +7,8 @@
 
 | もの | 用途 | 備考 |
 |---|---|---|
-| .NET SDK 10.0.100 以上 | すべて | `global.json` で指定。`dotnet --version` で確認する |
+| .NET SDK 8.0.100 以上（8.0.x） | API、デスクトップ版、WPF 版、テスト | ルートの `global.json` で指定。`dotnet --version` で確認する |
+| .NET SDK 10.0.100 以上 | ブラウザ版、Android 版、iOS 版 | Avalonia 12 がこれらに net10.0 を必須としているため。各フォルダーの `global.json` で指定 |
 | `wasm-tools` ワークロード | ブラウザ版（`TaskDoc.App.Browser`） | Avalonia のブラウザ版で推奨されている。`dotnet workload install wasm-tools` |
 | `android` ワークロード、JDK、Android SDK | Android 版 | Android 版をビルドするときだけ |
 | macOS、Xcode、`ios` ワークロード | iOS 版 | iOS 版をビルドするときだけ |
@@ -20,11 +21,17 @@ SQLite は NuGet パッケージに含まれているので、別途インスト
 ```powershell
 git clone https://github.com/TomoyukiNakama/taskdoc.git
 cd taskdoc
-dotnet build TaskDoc.Dev.slnf
+dotnet build TaskDoc.sln
 ```
 
-`TaskDoc.Dev.slnf` は Android / iOS を除いた開発用のソリューションフィルター。
-Android / iOS も含めてビルドするときは `TaskDoc.slnx` を使う。
+`TaskDoc.sln` には .NET 8 SDK でビルドできるプロジェクトだけが入っている。
+ブラウザ版・Android 版・iOS 版は .NET 10 SDK が必要なので、それぞれのフォルダーに移動してからビルドする
+（フォルダー内の `global.json` で SDK 10 が選ばれる。リポジトリのルートから `--project` で指定すると SDK 8 が選ばれて失敗する）。
+
+```powershell
+cd src/TaskDoc.App.Browser   # または src/TaskDoc.App.Android / src/TaskDoc.App.iOS
+dotnet build
+```
 
 ## 3. データベースの初期化
 
@@ -97,8 +104,9 @@ API を起動したまま、別のターミナルで起動する。
 # デスクトップ版（Windows / macOS / Linux）
 dotnet run --project src/TaskDoc.App.Desktop
 
-# ブラウザ版（http://localhost:5235 を開く）
-dotnet run --project src/TaskDoc.App.Browser
+# ブラウザ版（http://localhost:5235 を開く。.NET 10 SDK が必要なので、フォルダーに移動してから実行する）
+cd src/TaskDoc.App.Browser
+dotnet run
 ```
 
 手順 3 の初期管理者でログインし、**最初にパスワードを変更する**。
