@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
     UI-framework-independent client: view models, API clients (Refit), sign-in session.
-    Shared by the Avalonia app (TaskDoc.App: Desktop / Browser / Android / iOS) and the WPF app (TaskDoc.App.Wpf).
-    Must not reference Avalonia or WPF; dialogs, notifications and the UI thread go through the interfaces in
+    Shared by the Avalonia app (TaskDoc.App: Desktop / Browser / Android / iOS) the WPF app (TaskDoc.App.Wpf) and the Windows Forms app (TaskDoc.App.WinForms).
+    Must not reference Avalonia, WPF or Windows Forms; dialogs, notifications and the UI thread go through the interfaces in
     Services/IPlatformServices.cs, which each app implements.
   -->
   <PropertyGroup>

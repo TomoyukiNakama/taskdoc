@@ -7,7 +7,7 @@
 
 | もの | 用途 | 備考 |
 |---|---|---|
-| .NET SDK 8.0.100 以上（8.0.x） | API、デスクトップ版、WPF 版、テスト | ルートの `global.json` で指定。`dotnet --version` で確認する |
+| .NET SDK 8.0.100 以上（8.0.x） | API、デスクトップ版、WPF 版、Windows Forms 版、テスト | ルートの `global.json` で指定。`dotnet --version` で確認する |
 | .NET SDK 10.0.100 以上 | ブラウザ版、Android 版、iOS 版 | Avalonia 12 がこれらに net10.0 を必須としているため。各フォルダーの `global.json` で指定 |
 | `wasm-tools` ワークロード | ブラウザ版（`TaskDoc.App.Browser`） | Avalonia のブラウザ版で推奨されている。`dotnet workload install wasm-tools` |
 | `android` ワークロード、JDK、Android SDK | Android 版 | Android 版をビルドするときだけ |

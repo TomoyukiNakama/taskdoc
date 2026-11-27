@@ -16,14 +16,15 @@
 | `src/TaskDoc.App.Android` | Android（JDK と Android SDK が必要） |
 | `src/TaskDoc.App.iOS` | iOS（macOS + Xcode が必要） |
 | `src/TaskDoc.App.Wpf` | WPF 版（Windows 専用、[WPF-UI](https://github.com/lepoco/wpfui) の Fluent デザイン） |
+| `src/TaskDoc.App.WinForms` | Windows Forms 版（Windows 専用、標準コントロールのみ） |
 | `tests/TaskDoc.Api.Tests` | API の結合テスト（一時 SQLite ファイルを使用） |
 | `tests/TaskDoc.App.Tests` | UI テスト（Avalonia Headless） |
 
 - NuGet のバージョンは `Directory.Packages.props` で一括管理する（csproj には Version を書かない）。
-- .NET 8 ベース（`global.json` で SDK 8.0 を指定）。`TaskDoc.sln` は SDK 8 でビルドできるプロジェクト（API・共通ライブラリ・デスクトップ・WPF・テスト）をまとめたもの。
+- .NET 8 ベース（`global.json` で SDK 8.0 を指定）。`TaskDoc.sln` は SDK 8 でビルドできるプロジェクト（API・共通ライブラリ・デスクトップ・WPF・Windows Forms・テスト）をまとめたもの。
 - ブラウザ版・Android・iOS は Avalonia 12 が net10.0 を必須としているため net10.0 のままで、`TaskDoc.sln` に含めない。各フォルダーの `global.json` で SDK 10 を指定しているので、**そのフォルダーに移動してから** `dotnet build` / `dotnet run` する（.NET 10 SDK が必要）。
-- Avalonia 版と WPF 版は同じ ViewModel（`TaskDoc.Client`）を使い、違うのは画面（XAML）だけ。ダイアログ・通知・UI スレッドは `TaskDoc.Client/Services/IPlatformServices.cs` のインターフェースを通し、各アプリが実装する（Avalonia 版は ShadUI、WPF 版は WPF-UI）。
-- ViewModel を追加したら、両方のアプリに画面の対応付けを書く（Avalonia 版は `ViewLocator.cs`、WPF 版は `App.xaml` の `DataTemplate`）。漏れは `ViewMappingTests` が検出する。
+- Avalonia 版・WPF 版・Windows Forms 版は同じ ViewModel（`TaskDoc.Client`）を使い、違うのは画面だけ。ダイアログ・通知・UI スレッドは `TaskDoc.Client/Services/IPlatformServices.cs` のインターフェースを通し、各アプリが実装する（Avalonia 版は ShadUI、WPF 版は WPF-UI、Windows Forms 版は標準のフォームとコントロール）。
+- ViewModel を追加したら、すべてのアプリに画面の対応付けを書く（Avalonia 版は `ViewLocator.cs`、WPF 版は `App.xaml` の `DataTemplate`、Windows Forms 版は `ViewLocator.cs`）。漏れは `ViewMappingTests` が検出する。
 
 ## 別の PC ですぐに動かす
 
@@ -34,6 +35,7 @@ scripts/setup-dev-db.sh                                   # データベース�
 dotnet run --project src/TaskDoc.Api --launch-profile http   # API を起動（別ターミナルで次へ）
 dotnet run --project src/TaskDoc.App.Desktop               # デスクトップアプリを起動
 dotnet run --project src/TaskDoc.App.Wpf                   # または WPF 版を起動（Windows のみ）
+dotnet run --project src/TaskDoc.App.WinForms              # または Windows Forms 版を起動（Windows のみ）
 ```
 
 `setup-dev-db.sh` が作るユーザー（**開発専用**。パスワードが公開されているので本番では使わない）:
@@ -69,6 +71,9 @@ cd src/TaskDoc.App.Browser && dotnet run
 
 # WPF 版を起動（Windows のみ）
 dotnet run --project src/TaskDoc.App.Wpf
+
+# Windows Forms 版を起動（Windows のみ）
+dotnet run --project src/TaskDoc.App.WinForms
 ```
 
 ## WPF 版
@@ -79,6 +84,21 @@ dotnet run --project src/TaskDoc.App.Wpf
 - 接続先の API は既定で `http://localhost:5227`。変えるときは環境変数 `TASKDOC_API_URL` を設定して起動する。
 - 名前空間は `TaskDoc.WpfApp`。`TaskDoc.App.Wpf` にすると、名前の一部の `Wpf` が WPF-UI の名前空間 `Wpf.Ui` と衝突してビルドできない。
 - 自動テストは Avalonia 版の画面に対して行っている。ViewModel は共通なので動作のロジックは同じだが、WPF 版の画面そのもの（見た目・バインディング）は Windows で実際に操作して確認する。
+
+## Windows Forms 版
+
+- Windows 10 / 11 専用。Linux / macOS でもビルドはできる（`EnableWindowsTargeting`）が、起動はできない。
+- 追加の UI パッケージは使わず、標準コントロールだけで作っている。ライトテーマのみ（.NET 8 の Windows Forms にはダークモードがない）。
+- 画面（`Views/*View.cs`）・`MainForm`・`DialogForm` は Visual Studio のデザイナーで開ける。配置と見た目（色・文字・大きさ）は `*.Designer.cs`、ViewModel とのつなぎ込みは `*.cs` に書く。
+  - デザイナーは基底クラス `ViewBase` を作って表示するので、`ViewBase` は abstract にしない。各画面のコンストラクターは ViewModel を受け取るが、デザイナーには影響しない。
+  - ログイン中のユーザーによって変わる部分（権限で隠すメニュー、編集時だけ出す欄など）は `*.cs` で切り替える。デザイナーではすべて表示された状態で見える。
+  - 色はデザイナーで個別に設定している。コードから使う色（サイドバーの選択色など）は `Ui.cs`。
+- ViewModel とのバインディングは `Binder.cs`（XAML のバインディングに相当）。各画面が 1 つ持ち、画面を破棄すると ViewModel へのイベント登録も外れる。
+- 拡大率は 96 DPI で設計し（`AutoScaleMode.Dpi`）、実行時に画面の DPI に合わせて拡大する。
+- ダイアログは `MainForm` を親にしたモーダルフォーム（`DialogForm`）、通知は `MainForm` 下部のトーストに表示する（`Services/WinFormsPlatformServices.cs`）。
+- 接続先の API は既定で `http://localhost:5227`。変えるときは環境変数 `TASKDOC_API_URL` を設定して起動する。
+- 名前空間は `TaskDoc.WinFormsApp`（WPF 版の `TaskDoc.WpfApp` に合わせた）。
+- 主なコントロールには `Name`（UI オートメーションの AutomationId になる）を WPF 版の `x:Name` と同じ名前で付けている。画面そのもの（見た目・バインディング）は Windows で実際に操作して確認する。
 
 ## Avalonia 版の UI（ShadUI）
 

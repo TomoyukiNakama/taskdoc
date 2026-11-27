@@ -6,9 +6,9 @@ using TaskDoc.Client.ViewModels;
 namespace TaskDoc.App.Tests;
 
 /// <summary>
-/// Every page / dialog view model in TaskDoc.Client needs a view in both apps. A missing mapping does not fail the
-/// build: Avalonia shows a "No view registered" placeholder, WPF shows the type name. The WPF app cannot run here
-/// (Windows only), so its App.xaml is checked as text.
+/// Every page / dialog view model in TaskDoc.Client needs a view in every app. A missing mapping does not fail the
+/// build: Avalonia shows a "No view registered" placeholder, WPF shows the type name, Windows Forms throws when the
+/// page opens. The WPF and Windows Forms apps cannot run here (Windows only), so their mappings are checked as text.
 /// </summary>
 public sealed partial class ViewMappingTests
 {
@@ -42,6 +42,17 @@ public sealed partial class ViewMappingTests
         Assert.Contains(viewModel, mapped);
     }
 
+    [Theory]
+    [MemberData(nameof(ViewModels))]
+    public void WinFormsApp_HasAView(string viewModel)
+    {
+        var locator = File.ReadAllText(Path.GetFullPath(
+            Path.Combine(AppContext.BaseDirectory, "../../../../../src/TaskDoc.App.WinForms/ViewLocator.cs")));
+        var mapped = WinFormsViewLocatorCase().Matches(locator).Select(m => m.Groups[1].Value);
+
+        Assert.Contains(viewModel, mapped);
+    }
+
     /// <summary>The view locator only looks at the type, so constructor arguments are not needed.</summary>
     private static object CreateUninitialized(string viewModel) =>
         System.Runtime.CompilerServices.RuntimeHelpers.GetUninitializedObject(
@@ -49,4 +60,8 @@ public sealed partial class ViewMappingTests
 
     [GeneratedRegex(@"<DataTemplate DataType=""\{x:Type vm:(\w+)\}"">")]
     private static partial Regex WpfDataTemplate();
+
+    /// <summary>A case of the switch in the Windows Forms ViewLocator: "LoginViewModel vm => new LoginView(vm),".</summary>
+    [GeneratedRegex(@"^\s*(\w+) vm => new \w+\(vm\),", RegexOptions.Multiline)]
+    private static partial Regex WinFormsViewLocatorCase();
 }

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Windows desktop app built with Windows Forms (standard controls only, no extra UI package). View models and API
+    access come from TaskDoc.Client, shared with the Avalonia and WPF apps, so all behave the same; only the views differ.
+    Each view is a UserControl that opens in the Visual Studio designer: its layout and look are in X.Designer.cs,
+    its bindings to the view model (Binder.cs) in X.cs.
+    Runs on Windows only. EnableWindowsTargeting lets it build (not run) on Linux / macOS too.
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>TaskDoc.WinForms</AssemblyName>
+    <!-- Same reason as the WPF app: keep "WinForms" out of a namespace segment of its own. -->
+    <RootNamespace>TaskDoc.WinFormsApp</RootNamespace>
+    <!-- Used by ApplicationConfiguration.Initialize() (generated). -->
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <ApplicationVisualStyles>true</ApplicationVisualStyles>
+    <ApplicationDefaultFont>Yu Gothic UI, 9.75pt</ApplicationDefaultFont>
+  </PropertyGroup>
+
+  <!-- Open these in the designer (Visual Studio would otherwise add the same lines on first open). -->
+  <ItemGroup>
+    <Compile Update="MainForm.cs" SubType="Form" />
+    <Compile Update="DialogForm.cs" SubType="Form" />
+    <Compile Update="Views\*View.cs" SubType="UserControl" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskDoc.Client\TaskDoc.Client.csproj" />
+  </ItemGroup>
+</Project>

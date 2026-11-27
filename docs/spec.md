@@ -6,7 +6,7 @@
 
 タスクとドキュメントを紐づけて管理するアプリケーション。
 
-- クライアント: Avalonia UI 12.0.x（現在 12.0.5。12.1 以降は .NET 8 SDK のコンパイラーに対応しないため。デスクトップ / ブラウザ(WASM) / Android / iOS）、および WPF 版（Windows 専用、WPF-UI 4.x）。ViewModel と API 通信は共通ライブラリ（TaskDoc.Client）にまとめ、両方で使う
+- クライアント: Avalonia UI 12.0.x（現在 12.0.5。12.1 以降は .NET 8 SDK のコンパイラーに対応しないため。デスクトップ / ブラウザ(WASM) / Android / iOS）、WPF 版（Windows 専用、WPF-UI 4.x）、および Windows Forms 版（Windows 専用、標準コントロール）。ViewModel と API 通信は共通ライブラリ（TaskDoc.Client）にまとめ、すべてで使う
 - サーバー: ASP.NET Core Web API（同一ソリューション）
 - ランタイム: .NET 8（LTS）。ただしブラウザ版・Android・iOS は Avalonia 12 の要件により .NET 10
 - 通信: 常にオンライン（クライアントはデータを持たず、毎回 API を呼ぶ）
@@ -20,12 +20,12 @@
 | スキーマ管理 | DbUp（`dbup-sqlite`）。番号付き SQL ファイルを API 起動時に順番に適用する |
 | API の形式 | ASP.NET Core Minimal API |
 | MVVM | CommunityToolkit.Mvvm |
-| UI テーマ・部品 | Avalonia 版: [ShadUI](https://github.com/accntech/shad-ui)（shadcn/ui 風、MIT）。FluentTheme は使わない。アイコンは Lucide（ISC、`Assets/Fonts`）。WPF 版: [WPF-UI](https://github.com/lepoco/wpfui)（Fluent、MIT）。アイコンは WPF-UI 付属の Fluent System Icons |
+| UI テーマ・部品 | Avalonia 版: [ShadUI](https://github.com/accntech/shad-ui)（shadcn/ui 風、MIT）。FluentTheme は使わない。アイコンは Lucide（ISC、`Assets/Fonts`）。WPF 版: [WPF-UI](https://github.com/lepoco/wpfui)（Fluent、MIT）。アイコンは WPF-UI 付属の Fluent System Icons。Windows Forms 版: 標準コントロール（ライトテーマのみ） |
 | API クライアント | Refit（Contracts の DTO をそのまま使う） |
 | リアルタイム通信 | SignalR |
 | テスト | xUnit v3（3.2.x。Avalonia.Headless.XUnit 12 が 4.x に未対応のため）。API は一時 SQLite ファイル、UI は Avalonia Headless でテストする |
 | バージョン管理 | git（CI は当面なし） |
-| 共有コード | API とクライアントで DTO（TaskDoc.Contracts）を共有。Avalonia 版と WPF 版で ViewModel・API クライアント・ログイン状態の管理（TaskDoc.Client）を共有 |
+| 共有コード | API とクライアントで DTO（TaskDoc.Contracts）を共有。Avalonia 版・WPF 版・Windows Forms 版で ViewModel・API クライアント・ログイン状態の管理（TaskDoc.Client）を共有 |
 | iOS ビルド | macOS + Xcode が必要（開発機は Ubuntu のためビルド対象外） |
 | サーバーの実行環境 | 未定。特定の OS やホスティングに依存しない作りにする（設定は環境変数 / appsettings で切り替え） |
 | 画面の言語 | 日本語。文言はリソースファイルに分け、将来ほかの言語を追加できるようにする |

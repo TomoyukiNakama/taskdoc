@@ -3,7 +3,7 @@ using TaskDoc.Client.ViewModels;
 namespace TaskDoc.Client.Services;
 
 // What the view models need from the UI framework. TaskDoc.App implements these with Avalonia + ShadUI,
-// TaskDoc.App.Wpf with WPF + WPF-UI.
+// TaskDoc.App.Wpf with WPF + WPF-UI, TaskDoc.App.WinForms with Windows Forms.
 
 /// <summary>Modal dialogs whose content is a view model (each app maps the view model to its view).</summary>
 public interface IDialogService
